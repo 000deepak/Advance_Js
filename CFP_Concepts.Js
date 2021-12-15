@@ -1,4 +1,5 @@
 //----------------------------let var constant-----------------------
+//not declared is not defined
 const myName = "deepak"; //global scope
 
 function first() {
@@ -117,7 +118,6 @@ userLogin("deep", "sangli", 2000)
   .then((aadhar) => otp_Validation(aadhar))
   .then((paymentlinks) => user_Payment(paymentlinks));
 
-  
 //---------------------------------------Async/Await--------------------
 
 //example 1
@@ -137,39 +137,80 @@ userLogin("deep", "sangli", 2000)
   }
   
   printAll(); */
-  
-  //example 2
-  function userLogin(name, address, aadhar) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        console.log(name);
-        resolve(aadhar);
-      }, 1000);
-    });
+
+//example 2
+function userLogin(name, address, aadhar) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log(name);
+      resolve(aadhar);
+    }, 1000);
+  });
+}
+
+function otp_Validation(aadhar) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log(aadhar);
+      resolve("paymentlink");
+    }, 1000);
+  });
+}
+
+function user_Payment(paymentlink) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log(paymentlink);
+      resolve();
+    }, 1000);
+  });
+}
+
+async function user_suscrption() {
+  const aadhar = await userLogin("deep", "sangli", 2000);
+  const paymentlink = await otp_Validation(aadhar);
+  const success = await user_Payment(paymentlink);
+}
+
+user_suscrption();
+
+
+//-------------------------------Prototypes------------------------
+
+//Add new Properties
+function Person(first, last, age) {
+  this.firstName = first;
+  this.lastName = last;
+  this.age = age;
+}
+
+Person.prototype.nationality = "Indian";
+
+//Add new methods
+function Person(first, last, age) {
+  this.firstName = first;
+  this.lastName = last;
+  this.age = age;
+
+}
+
+Person.prototype.name = function() {
+  return this.firstName + " " + this.lastName;
+};
+
+//----------------------------------IIFE-------------------------
+
+(function (i) {
+  console.log("hello mern", i);
+})(i);
+
+//--------------------------------Currying_Functions--------------
+
+function calculateVolume(length) {
+  return function (breadth) {
+      return function (height) {
+          return length * breadth * height;
+      }
   }
-  
-  function otp_Validation(aadhar) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        console.log(aadhar);
-        resolve("paymentlink");
-      }, 1000);
-    });
-  }
-  
-  function user_Payment(paymentlink) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        console.log(paymentlink);
-        resolve();
-      }, 1000);
-    });
-  }
-  
-  async function user_suscrption(){
-      const aadhar = await userLogin('deep','sangli',2000)
-      const paymentlink = await  otp_Validation(aadhar)
-      const success =await user_Payment(paymentlink)
-  }
-  
-  user_suscrption();
+}
+console.log(calculateVolume(4)(5)(1));
